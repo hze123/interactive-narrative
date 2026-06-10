@@ -15,9 +15,16 @@
 
 <body>
   <header id="site-header">
-    <h1 id="site-title">Beyond the Forecast</h1>
-    <div id="site-subtitle">
-      A visual article about the weather layers that shape everyday campus life in Seattle.
+    <div class="header-left">
+      <h1 id="site-title">Beyond the Forecast</h1>
+      <div id="site-subtitle">
+        IMT 561 Data Visualization: Design and Development.
+      </div>
+    </div>
+  
+    <div id="header-status" aria-label="scroll progress">
+      activeIndex: <span id="active-index-value">0</span>
+      progress: <span id="progress-value">0.00</span>
     </div>
   </header>
 
@@ -27,7 +34,7 @@
         <p class="eyebrow">Beyond the Forecast</p>
 
         <p class="article-meta">
-          IMT 561 Final Project · Spring 2026 · Kexuan Feng & Lexi He · ~8 min read
+          IMT 561 Final Project · The weather layers that shape everyday campus life in Seattle.
         </p>
     
         <h1>Seattle weather is not just rain.</h1>
@@ -369,5 +376,40 @@
 
   <script src="js/libraries/p5.js"></script>
   <script src="js/sketches/weather/weather_project.js"></script>
+
+  <script>
+    const stepSections = document.querySelectorAll("#sections .step");
+    const activeIndexValue = document.getElementById("active-index-value");
+    const progressValue = document.getElementById("progress-value");
+  
+    function updateHeaderStatus() {
+      const scrollTop = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? scrollTop / maxScroll : 0;
+  
+      let activeIndex = 0;
+  
+      stepSections.forEach((step, index) => {
+        const rect = step.getBoundingClientRect();
+  
+        if (rect.top <= window.innerHeight * 0.45) {
+          activeIndex = step.dataset.activeIndex || index;
+        }
+      });
+  
+      if (activeIndexValue) {
+        activeIndexValue.textContent = activeIndex;
+      }
+  
+      if (progressValue) {
+        progressValue.textContent = progress.toFixed(2);
+      }
+    }
+  
+    window.addEventListener("scroll", updateHeaderStatus);
+    window.addEventListener("resize", updateHeaderStatus);
+    updateHeaderStatus();
+  </script>
+  
 </body>
 </html>
